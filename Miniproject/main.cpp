@@ -22,16 +22,22 @@ int main(int argc, char **argv) {
     std::cout << "Printing original Sudoku:" << std::endl;
     print(original_sudoku);
     
-    std::cout << "Printing initial intermediate state:" << std::endl;
-    state_vector intermedate_state(9, std::vector<std::vector<int>> (9,{1,2,3,4,5,6,7,8,9}));
-    print(intermedate_state);
-    prepare_intermediate_state(intermedate_state, original_sudoku);
-
+    state_vector solution_sudoku(9, std::vector<std::vector<int>> (9,{1,2,3,4,5,6,7,8,9}));
+    prepare_intermediate_state(solution_sudoku, original_sudoku);
     std::cout << "Printing after preparation: " << std::endl;
-    print(intermedate_state);
+    print(solution_sudoku);
 
-    parse_input_sudoku(intermedate_state, original_sudoku);
-    std::cout << "Printing intermediate state after parsing:" << std::endl;
-    print(intermedate_state);
-
+    if ( constraint_propagation(solution_sudoku, original_sudoku) ) {
+        std::cout << "Solved puzzle after constraint propagation:" << std::endl;
+        print(solution_sudoku);
+    } else {
+        std::cout << "Printing puzzle after constraint propagation:" << std::endl;
+        print(solution_sudoku);
+        if ( brute_force(solution_sudoku, 0, 0) ) {
+            std::cout << "Solved puzzle after using brute force on top. Solution:" << std::endl;
+        } else {
+            std::cout << "Couldn't solve puzzle with brute force either. We cam this far:" << std::endl;
+        }
+        print(solution_sudoku);
+    }
 }

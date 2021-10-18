@@ -10,7 +10,9 @@
 using sudoku = int[9][9];
 using state_vector = std::vector<std::vector<std::vector<int>>>;
 
-void parse_input_sudoku(state_vector &_state_vector, const sudoku &_original_sudoku);
+bool constraint_propagation(state_vector &_state_vector, const sudoku &_original_sudoku);
+bool sudoku_is_solved(state_vector &_state_vector);
+
 void remove_and_update_peers(int _value, unsigned int row, unsigned int col, state_vector &_state_vector);
 void check_unique_value_among_peers(unsigned int row, unsigned int col, state_vector &_state_vector);
 

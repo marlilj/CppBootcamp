@@ -1,6 +1,6 @@
 #include"solver.h"
 
-void parse_input_sudoku(state_vector &_state_vector, const sudoku &_original_sudoku) {
+bool constraint_propagation(state_vector &_state_vector, const sudoku &_original_sudoku) {
     int value = 0;
     for (int row = 0 ; row < 9; row++) {
         for (int col = 0;  col < 9; col++ ) {
@@ -12,6 +12,20 @@ void parse_input_sudoku(state_vector &_state_vector, const sudoku &_original_sud
             }
         }
     }
+    return sudoku_is_solved(_state_vector);
+}
+
+bool sudoku_is_solved(state_vector &_state_vector) {
+    bool solved = true;
+    for (int row = 0 ; row < 9; row++) {
+        for (int col = 0;  col < 9; col++ ) {
+            if ( _state_vector[row][col].size() > 1 ) {
+                solved = false;
+                break;
+            }
+        }
+    }
+    return solved;
 }
 
 void remove_and_update_peers(int _value, unsigned int row, unsigned int col, state_vector &_state_vector) {
@@ -50,8 +64,6 @@ void check_unique_value_among_peers(unsigned int row, unsigned int col, state_ve
                     _state_vector[row][col]={_state_vector[row][col][i]};
                     remove_and_update_peers(_state_vector[row][col][0], row, col, _state_vector);
                     break;
-                } else {
-                    std::cout << "Option " << _state_vector[row][col][i] << " in (" << row << ", " << col << ") square" << std::endl;
                 }
             }
         }
