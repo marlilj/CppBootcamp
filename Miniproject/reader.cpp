@@ -53,6 +53,7 @@ bool read_csv(std::string file_name, sudoku &original_sudoku) {
         }
         fin.close();
 
+        // If we have the correct number of inputs, set return value to true
         if ( total_count == SSIZE*SSIZE ) {
             return_val = true;
         } else {

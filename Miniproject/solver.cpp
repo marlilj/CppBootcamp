@@ -2,6 +2,9 @@
 
 bool constraint_propagation(state_vector &_state_vector, const sudoku &_original_sudoku) {
     int value = 0;
+
+    // Loop over the sudoku once for each square, if set remove peers, if not,
+    // check if one possible solution exists only here, or remove entries that are impossible
     for (int row = 0 ; row < SSIZE; row++) {
         for (int col = 0;  col < SSIZE; col++ ) {
             value = _original_sudoku[row][col];
