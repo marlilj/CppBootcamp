@@ -7,6 +7,7 @@
 #include"brute_force.h"
 #include<vector>
 #include<iostream>
+#include <chrono>
 
 using sudoku = int[9][9];
 

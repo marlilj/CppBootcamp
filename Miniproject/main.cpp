@@ -13,6 +13,7 @@
 */
 
 int main(int argc, char **argv) {
+    auto start_program = std::chrono::high_resolution_clock::now();
     std::cout << "argc:" << argc << std::endl;
     for (int i=0; i<argc; i++) {
         std::cout << "argv: " << argv[i] << std::endl;
@@ -33,11 +34,18 @@ int main(int argc, char **argv) {
     } else {
         std::cout << "Printing puzzle after constraint propagation:" << std::endl;
         print(solution_sudoku);
+        auto start_brute_force = std::chrono::high_resolution_clock::now();
         if ( brute_force(solution_sudoku, 0, 0) ) {
             std::cout << "Solved puzzle after using brute force on top. Solution:" << std::endl;
         } else {
             std::cout << "Couldn't solve puzzle with brute force either. We cam this far:" << std::endl;
         }
+        auto end_brute_force = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_brute_force - start_brute_force);
         print(solution_sudoku);
+        std::cout << "Execution time for brute force (ms): " << duration.count() << std::endl;
     }
+    auto end_program = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_program - start_program);
+    std::cout << "Total execution time (ms): " << duration.count() << std::endl;
 }
