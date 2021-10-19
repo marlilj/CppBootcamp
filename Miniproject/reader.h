@@ -6,6 +6,6 @@
 #include <fstream>
 #include <sstream>
 
-void read_csv(std::string file_name, sudoku &original_sudoku);
+bool read_csv(std::string file_name, sudoku &original_sudoku);
 
 #endif
