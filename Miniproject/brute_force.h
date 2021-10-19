@@ -1,9 +1,7 @@
 #ifndef BRUTEFORCE
 #include"solver.h"
 #include <iostream>
-#include<vector>
-
-using state_vector = std::vector<std::vector<std::vector<int>>>;
+#include"variable_definitions.h"
 
 bool brute_force(state_vector &_state_vector, int row, int col);
 

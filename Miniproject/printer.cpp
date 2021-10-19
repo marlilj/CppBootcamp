@@ -2,9 +2,9 @@
 
 void print(sudoku &sudoku_puzzle) {
     std::cout << "----------------------------" << std::endl;
-    for (int i=0; i<9; i++) {
+    for (int i=0; i<SSIZE; i++) {
         std::cout << "| ";
-            for (int j=0; j<9; j++) {
+            for (int j=0; j<SSIZE; j++) {
                 std::cout << sudoku_puzzle[i][j] << " ";
                 if ((j+1)%3 == 0) {
                     std::cout << " | ";
@@ -20,9 +20,9 @@ void print(sudoku &sudoku_puzzle) {
 
 void print(state_vector &intermediate_state) {
     std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
-    for (int row = 0 ; row < intermediate_state.size(); row++) {
+    for (int row = 0 ; row < SSIZE; row++) {
         std::cout << "|\t";
-        for (int col = 0;  col < intermediate_state[row].size(); col++ ) {
+        for (int col = 0;  col < SSIZE; col++ ) {
             for (int x: intermediate_state[row][col]) {
                 std::cout << x;
             }

@@ -1,14 +1,11 @@
 #ifndef SOLVER
 #define SOLVER
 
-#include<vector>
 #include<iostream>
 #include <algorithm>
 
 #include"printer.h"
-
-using sudoku = int[9][9];
-using state_vector = std::vector<std::vector<std::vector<int>>>;
+#include"variable_definitions.h"
 
 bool constraint_propagation(state_vector &_state_vector, const sudoku &_original_sudoku);
 bool sudoku_is_solved(state_vector &_state_vector);

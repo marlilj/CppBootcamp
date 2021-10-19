@@ -14,10 +14,10 @@ void read_csv(std::string file_name, sudoku &original_sudoku) {
     fin.open(file_name);
 
     if (fin.is_open()){
-        for (int i=0; i<9; i++) {
+        for (int i=0; i<SSIZE; i++) {
             getline(fin,line); // store the line in line
             std::stringstream ss(line); //
-            for (int j=0; j<9; j++) {
+            for (int j=0; j<SSIZE; j++) {
                 getline(ss, word, ',');
                 original_sudoku[i][j] = std::stoi(word);
             }

@@ -1,8 +1,10 @@
-#include<iostream>
-#include<vector>
+#ifndef PRINTER
+#define PRINTER
 
-using sudoku = int[9][9];
-using state_vector = std::vector<std::vector<std::vector<int>>>;
+#include<iostream>
+#include"variable_definitions.h"
 
 void print(sudoku &sudoku_puzzle);
 void print(state_vector &intermediate_state);
+
+#endif

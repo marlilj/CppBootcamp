@@ -8,9 +8,6 @@
 #include<vector>
 #include<iostream>
 #include <chrono>
-
-using sudoku = int[9][9];
-
-using state_vector = std::vector<std::vector<std::vector<int>>>;
+#include"variable_definitions.h"
 
 #endif

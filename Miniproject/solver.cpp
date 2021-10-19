@@ -2,8 +2,8 @@
 
 bool constraint_propagation(state_vector &_state_vector, const sudoku &_original_sudoku) {
     int value = 0;
-    for (int row = 0 ; row < 9; row++) {
-        for (int col = 0;  col < 9; col++ ) {
+    for (int row = 0 ; row < SSIZE; row++) {
+        for (int col = 0;  col < SSIZE; col++ ) {
             value = _original_sudoku[row][col];
             if (value != 0) {
                 remove_and_update_peers(value, row, col, _state_vector);
@@ -75,7 +75,7 @@ void check_unique_value_among_peers(unsigned int row, unsigned int col, state_ve
 
 bool value_in_row(int _value, unsigned int row, unsigned int value_col, state_vector &_state_vector) {
     bool return_val = false;
-    for (int col = 0;  col < _state_vector[row].size(); col++ ) {
+    for (int col = 0;  col < SSIZE; col++ ) {
         if (col != value_col && _state_vector[row][col].size() == 1 ) {
             if (_value == _state_vector[row][col][0]) {
                 return_val = true;
@@ -88,7 +88,7 @@ bool value_in_row(int _value, unsigned int row, unsigned int value_col, state_ve
 
 bool row_is_final(unsigned int row, unsigned int value_col, state_vector &_state_vector) {
     bool return_val = true;
-    for (int col = 0;  col < _state_vector[row].size(); col++ ) {
+    for (int col = 0;  col < SSIZE; col++ ) {
         if (col != value_col && _state_vector[row][col].size() != 1 ) {
                 return_val = false;
                 break;
@@ -99,7 +99,7 @@ bool row_is_final(unsigned int row, unsigned int value_col, state_vector &_state
 
 bool option_in_row(int _value, unsigned int row, unsigned int value_col, state_vector &_state_vector) {
     bool return_val = false;
-    for (int col = 0;  col < _state_vector[row].size(); col++ ) {
+    for (int col = 0;  col < SSIZE; col++ ) {
         if (col != value_col && _state_vector[row][col].size() > 1) {
             for (int i=0; i < _state_vector[row][col].size(); i++) {
                 if (_value == _state_vector[row][col][i]) {
@@ -113,7 +113,7 @@ bool option_in_row(int _value, unsigned int row, unsigned int value_col, state_v
 }
 
 void remove_from_row(int _value, unsigned int row, unsigned int value_col, state_vector &_state_vector) {
-    for (int col = 0;  col < _state_vector[row].size(); col++ ) {
+    for (int col = 0;  col < SSIZE; col++ ) {
         if (col != value_col) {
             for (int i=0; i < _state_vector[row][col].size(); i++) {
                 if (_value == _state_vector[row][col][i]) {
@@ -132,7 +132,7 @@ void remove_from_row(int _value, unsigned int row, unsigned int value_col, state
 
 bool value_in_col(int _value, unsigned int col, unsigned int value_row, state_vector &_state_vector) {
     bool return_val = false;
-    for (int row = 0;  row < _state_vector[col].size(); row++ ) {
+    for (int row = 0;  row < SSIZE; row++ ) {
         if ( row != value_row  && _state_vector[row][col].size() == 1 ) {
             if (_value == _state_vector[row][col][0]) {
                 return_val = true;
@@ -144,7 +144,7 @@ bool value_in_col(int _value, unsigned int col, unsigned int value_row, state_ve
 }
 
 void remove_from_col(int _value, unsigned int col, unsigned int value_row, state_vector &_state_vector) {
-    for (int row = 0;  row < _state_vector[col].size(); row++ ) {
+    for (int row = 0;  row < SSIZE; row++ ) {
         if ( row != value_row ) {
             for (int i=0; i < _state_vector[row][col].size(); i++) {
                 if (_value == _state_vector[row][col][i]) {
@@ -163,7 +163,7 @@ void remove_from_col(int _value, unsigned int col, unsigned int value_row, state
 
 bool option_in_col(int _value, unsigned int col, unsigned int value_row, state_vector &_state_vector) {
     bool return_val = false;
-    for (int row = 0;  row < _state_vector[col].size(); row++ ) {
+    for (int row = 0;  row < SSIZE; row++ ) {
         if ( row != value_row && _state_vector[row][col].size() > 1) {
             for (int i=0; i < _state_vector[row][col].size(); i++) {
                 if (_value == _state_vector[row][col][i]) {
@@ -234,8 +234,8 @@ bool option_in_box(int _value, unsigned int row, unsigned int col, state_vector 
 
 void prepare_intermediate_state(state_vector &_state_vector, const sudoku &_original_sudoku) {
     int value = 0;
-    for (int row = 0 ; row < 9; row++) {
-        for (int col = 0;  col < 9; col++ ) {
+    for (int row = 0 ; row < SSIZE; row++) {
+        for (int col = 0;  col < SSIZE; col++ ) {
             value = _original_sudoku[row][col];
             if (value != 0) {
                 _state_vector[row][col]={value};
