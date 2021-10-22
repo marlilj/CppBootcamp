@@ -117,7 +117,7 @@ bool option_in_row(int _value, unsigned int row, unsigned int value_col, state_v
 
 void remove_from_row(int _value, unsigned int row, unsigned int value_col, state_vector &_state_vector) {
     for (int col = 0;  col < SSIZE; col++ ) {
-        if (col != value_col) {
+        if (col != value_col && _state_vector[row][col].size() > 1) {
             for (int i=0; i < _state_vector[row][col].size(); i++) {
                 if (_value == _state_vector[row][col][i]) {
                     _state_vector[row][col].erase(_state_vector[row][col].begin()+i);
@@ -129,6 +129,7 @@ void remove_from_row(int _value, unsigned int row, unsigned int value_col, state
                     }
                 }
             }
+            check_unique_value_among_peers(row, col, _state_vector);
         }
     }
 }
@@ -148,7 +149,7 @@ bool value_in_col(int _value, unsigned int col, unsigned int value_row, state_ve
 
 void remove_from_col(int _value, unsigned int col, unsigned int value_row, state_vector &_state_vector) {
     for (int row = 0;  row < SSIZE; row++ ) {
-        if ( row != value_row ) {
+        if ( row != value_row && _state_vector[row][col].size() > 1) {
             for (int i=0; i < _state_vector[row][col].size(); i++) {
                 if (_value == _state_vector[row][col][i]) {
                     _state_vector[row][col].erase(_state_vector[row][col].begin()+i);
@@ -160,6 +161,7 @@ void remove_from_col(int _value, unsigned int col, unsigned int value_row, state
                     }
                 }
             }
+            check_unique_value_among_peers(row, col, _state_vector);
         }
     }
 }
@@ -189,12 +191,15 @@ void remove_from_box(int _value, unsigned int row, unsigned int col, state_vecto
                     if (_value == _state_vector[r][c][i]) {
                         _state_vector[r][c].erase(_state_vector[r][c].begin()+i);
                         --i;
-                        if (_state_vector[row][col].size() == 1) {
-                            remove_and_update_peers(_state_vector[row][col][0], row, col, _state_vector);
+                        if (_state_vector[r][c].size() == 1) {
+                            remove_and_update_peers(_state_vector[r][c][0], r, c, _state_vector);
                         } else {
-                            check_unique_value_among_peers(row, col, _state_vector);
+                            check_unique_value_among_peers(r, c, _state_vector);
                         }
                     }
+                }
+                if (_state_vector[r][c].size() > 1) {
+                    check_unique_value_among_peers(r, c, _state_vector);
                 }
             }
         }
