@@ -1,7 +1,7 @@
 #include"shape.h"
 
-template <typename T>
-void compare(T &_t1, T &_t2) {
+template <typename T1, typename T2>
+void compare(T1 &_t1, T2 &_t2) {
     if (_t1 == _t2) {
         std::cout << "EQUAL" << std::endl;
     } else if (_t1 >= _t2) {
@@ -13,7 +13,7 @@ void compare(T &_t1, T &_t2) {
 
 // Specialization of sum for struct Shape
 template<>
-void compare<Shape>(Shape &_t1, Shape &_t2) {
+void compare<Shape, Shape>(Shape &_t1, Shape &_t2) {
     std::cout << "FIRST:" << std::endl;
     _t1.print();
     std::cout << "SECOND:" << std::endl;
@@ -34,7 +34,13 @@ int main(int argc, char * argv[]) {
     Circle c(10);
     Square s(10);
     Rectangle r(10,10);
-    compare<Shape>(c,s);
+    Shape *shape_circle = new Circle(12);
+    Shape *shape_square = new Square(14);
+    compare<Shape,Shape>(r,s);
+    compare(*shape_circle, *shape_square);
+
+    delete shape_square;
+    delete shape_circle;
     // c.print();
     // s.print();
     // r.print();
