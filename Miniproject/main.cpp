@@ -14,20 +14,20 @@ int main(int argc, char **argv) {
     std::string input = argv[1];
 
     if ((input.substr(input.find_last_of(".") + 1)) == "csv") {
-        sudoku original_sudoku;
+        sudoku_t originalSudoku;
         // Try to parse csv sudoku, if wrong format, exit
-        if (read_csv(argv[1], original_sudoku)) {
-            sudokuSolver(original_sudoku);
+        if (readCsv(argv[1], originalSudoku)) {
+            sudokuSolver(originalSudoku);
         } else {
             std::cout << "Exiting..." << std::endl;
             return 1;
         }
     } else if (((input.substr(input.find_last_of(".") + 1)) == "txt")) {
-        std::vector<std::string> sudoku_input_list = read_txt(input);
-        for (std::string s: sudoku_input_list) {
-            sudoku original_sudoku = {};
-            if ( parse_sudoku(s, original_sudoku) ) {
-                sudokuSolver(original_sudoku);
+        std::vector<std::string> sudokuInputList = readTxt(input);
+        for (std::string s: sudokuInputList) {
+            sudoku_t originalSudoku = {};
+            if ( parseSudoku(s, originalSudoku) ) {
+                sudokuSolver(originalSudoku);
             }
         }
     } else {

@@ -9,27 +9,27 @@
 #include"variable_definitions.h"
 #include"brute_force.h"
 
-bool sudokuSolver(sudoku &original_sudoku);
+bool sudokuSolver(sudoku_t &originalSudoku);
 
-bool constraint_propagation(state_vector &_state_vector, const sudoku &_original_sudoku);
-bool sudoku_is_solved(state_vector &_state_vector);
+bool constraintPropagation(state_vector_t &_stateVector, const sudoku_t &_originalSudoku);
+bool sudokuIsSolved(state_vector_t &_stateVector);
 
-void remove_and_update_peers(int _value, unsigned int row, unsigned int col, state_vector &_state_vector);
-void check_unique_value_among_peers(unsigned int row, unsigned int col, state_vector &_state_vector);
+void removeAndUpdatePeers(int _value, unsigned int row, unsigned int col, state_vector_t &_stateVector);
+void checkUniqueValueAmongPeers(unsigned int row, unsigned int col, state_vector_t &_stateVector);
 
-bool value_in_row(int _value, unsigned int row, unsigned int value_col, state_vector &_state_vector);
-bool value_in_col(int _value, unsigned int col, unsigned int value_row, state_vector &_state_vector);
-bool value_in_box(int _value, unsigned int row, unsigned int col, state_vector &_state_vector);
+bool valueInRow(int _value, unsigned int row, unsigned int valueCol, state_vector_t &_stateVector);
+bool valueInCol(int _value, unsigned int col, unsigned int valueRow, state_vector_t &_stateVector);
+bool valueInBox(int _value, unsigned int row, unsigned int col, state_vector_t &_stateVector);
 
-bool option_in_row(int _value, unsigned int row, unsigned int value_col, state_vector &_state_vector);
-bool option_in_col(int _value, unsigned int col, unsigned int value_row, state_vector &_state_vector);
-bool option_in_box(int _value, unsigned int row, unsigned int col, state_vector &_state_vector);
+bool optionInRow(int _value, unsigned int row, unsigned int valueCol, state_vector_t &_stateVector);
+bool optionInCol(int _value, unsigned int col, unsigned int valueRow, state_vector_t &_stateVector);
+bool optionInBox(int _value, unsigned int row, unsigned int col, state_vector_t &_stateVector);
 
-void remove_from_row(int _value, unsigned int row, unsigned int value_col, state_vector &_state_vector);
-void remove_from_col(int _value, unsigned int col, unsigned int value_row, state_vector &_state_vector);
-void remove_from_box(int _value, unsigned int row, unsigned int col, state_vector &_state_vector);
+void removeFromRow(int _value, unsigned int row, unsigned int valueCol, state_vector_t &_stateVector);
+void removeFromCol(int _value, unsigned int col, unsigned int valuRow, state_vector_t &_stateVector);
+void removeFromBox(int _value, unsigned int row, unsigned int col, state_vector_t &_stateVector);
 
-void prepare_intermediate_state(state_vector &_state_vector, const sudoku &_original_sudoku);
+void prepareIntermediateState(state_vector_t &_stateVector, const sudoku_t &_originalSudoku);
 
 
 #endif

@@ -5,9 +5,9 @@
 
 const int SSIZE = 9; // SudokuSIZE
 
-using sudoku = int[SSIZE][SSIZE];
+using sudoku_t = int[SSIZE][SSIZE];
 
-using state_vector = std::vector<int>[SSIZE][SSIZE];
+using state_vector_t = std::vector<int>[SSIZE][SSIZE];
 
 
 #endif

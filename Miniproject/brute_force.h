@@ -3,6 +3,6 @@
 #include <iostream>
 #include"variable_definitions.h"
 
-bool brute_force(state_vector &_state_vector, int row, int col);
+bool bruteForce(state_vector_t &_stateVector, int row, int col);
 
 #endif

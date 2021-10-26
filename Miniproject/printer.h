@@ -4,7 +4,7 @@
 #include<iostream>
 #include"variable_definitions.h"
 
-void print(sudoku &sudoku_puzzle);
-void print(state_vector &intermediate_state);
+void print(sudoku_t &sudokuPuzzle);
+void print(state_vector_t &intermediateState);
 
 #endif

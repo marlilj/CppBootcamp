@@ -6,8 +6,8 @@
 #include <fstream>
 #include <sstream>
 
-bool read_csv(std::string file_name, sudoku &original_sudoku);
-std::vector<std::string> read_txt(std::string file_name);
-bool parse_sudoku(std::string _sudoku_string, sudoku &_sudoku_array);
+bool readCsv(std::string fileName, sudoku_t &originalSudoku);
+std::vector<std::string> readTxt(std::string fileName);
+bool parseSudoku(std::string _sudokuString, sudoku_t &_sudokuArray);
 
 #endif

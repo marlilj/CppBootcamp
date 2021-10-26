@@ -1,6 +1,6 @@
 #include"reader.h"
 
-bool read_csv(std::string file_name, sudoku &original_sudoku) {
+bool readCsv(std::string fileName, sudoku_t &originalSudoku) {
     /*
      * This function parses input files on below format
      *
@@ -15,18 +15,18 @@ bool read_csv(std::string file_name, sudoku &original_sudoku) {
      *  0, 0, 5, 2, 0, 6, 3, 0, 0
      */
 
-    bool return_val = false;
+    bool returnVal = false;
 
     std::string line;
     std::ifstream fin;
     std::string word;
 
-    std::cout << "Reading file: " << file_name << std::endl;
-    fin.open(file_name);
+    std::cout << "Reading file: " << fileName << std::endl;
+    fin.open(fileName);
 
     unsigned int i = 0;
     unsigned int j = 0;
-    unsigned int total_count = 0;
+    unsigned int totalCount = 0;
 
     if (fin.is_open()) {
 
@@ -39,8 +39,8 @@ bool read_csv(std::string file_name, sudoku &original_sudoku) {
                 try {
                     // If the number is in the correct range, add it
                     if ( std::stoi(word) >= 0 && std::stoi(word) < 10 ) {
-                            original_sudoku[i][j] = std::stoi(word);
-                            total_count++;
+                            originalSudoku[i][j] = std::stoi(word);
+                            totalCount++;
                     } else {
                         std::cout << "Element (" << i << "," << j << ") is out of range [0,9], hence neglected" << std::endl;
                     }
@@ -54,8 +54,8 @@ bool read_csv(std::string file_name, sudoku &original_sudoku) {
         fin.close();
 
         // If we have the correct number of inputs, set return value to true
-        if ( total_count == SSIZE*SSIZE ) {
-            return_val = true;
+        if ( totalCount == SSIZE*SSIZE ) {
+            returnVal = true;
         } else {
             std::cout << "Correctly parsed input sudoku is of wrong size" << std::endl;
         }
@@ -63,10 +63,10 @@ bool read_csv(std::string file_name, sudoku &original_sudoku) {
         std::cout << "Unable to open file" << std::endl;
     }
 
-    return return_val;
+    return returnVal;
 }
 
-std::vector<std::string> read_txt(std::string file_name) {
+std::vector<std::string> readTxt(std::string fileName) {
     /*
      * This function read input files on below format
      *
@@ -75,49 +75,49 @@ std::vector<std::string> read_txt(std::string file_name) {
      * 6.....8.3.4.7.................5.4.7.3..2.....1.6.......2.....5.....8.6......1....
      */
 
-    std::vector<std::string> sudoku_vector = {};
+    std::vector<std::string> sudokuVector = {};
 
     std::string line;
     std::ifstream fin;
     std::string word;
 
-    std::cout << "Reading file: " << file_name << std::endl;
-    fin.open(file_name);
+    std::cout << "Reading file: " << fileName << std::endl;
+    fin.open(fileName);
 
     if (fin.is_open()) {
         // Find all lines in file
         while (getline(fin,line) ) {
-            sudoku_vector.push_back(line);
+            sudokuVector.push_back(line);
         }
         fin.close();
     } else {
         std::cout << "Unable to open file" << std::endl;
     }
 
-    return sudoku_vector;
+    return sudokuVector;
 }
 
-bool parse_sudoku(std::string _sudoku_string, sudoku &_sudoku_array) {
+bool parseSudoku(std::string _sudokuString, sudoku_t &_sudokuArray) {
     /*
      * This function parses a string of below format into int[SSIZE][SSIZE] with
      * . replaced by 0
      *
      * 4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......
      */
-    bool return_value = false;
+    bool returnValue = false;
     unsigned int i = 0;
     unsigned int j = 0;
-    unsigned int total_count = 0;
-    for(char l : _sudoku_string) {
+    unsigned int totalCount = 0;
+    for(char l : _sudokuString) {
         // If the number is in the correct range, add it
         if ( l == '.') {
-            _sudoku_array[i][j] = 0;
-            total_count++;
+            _sudokuArray[i][j] = 0;
+            totalCount++;
         } else {
         int number = l - '0';
             if ( number > 0 && number < 10 ) {
-                    _sudoku_array[i][j] = number;
-                    total_count++;
+                    _sudokuArray[i][j] = number;
+                    totalCount++;
             } else {
                 std::cout << "Element (" << i << "," << j << ") is out of range [0,9], hence neglected" << std::endl;
             }
@@ -129,9 +129,9 @@ bool parse_sudoku(std::string _sudoku_string, sudoku &_sudoku_array) {
         }
     }
 
-    if ( total_count == SSIZE*SSIZE) {
-        return_value = true;
+    if ( totalCount == SSIZE*SSIZE) {
+        returnValue = true;
     }
 
-    return return_value;
+    return returnValue;
 }
