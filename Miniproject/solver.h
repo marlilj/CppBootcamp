@@ -9,7 +9,7 @@
 #include"variable_definitions.h"
 #include"brute_force.h"
 
-bool sudokuSolver(sudoku_t &originalSudoku);
+bool sudokuSolver(sudoku_t &originalSudoku, bool useBruteForce, bool prettyPrint);
 
 bool constraintPropagation(state_vector_t &_stateVector, const sudoku_t &_originalSudoku);
 bool sudokuIsSolved(state_vector_t &_stateVector);

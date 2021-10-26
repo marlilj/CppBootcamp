@@ -1,4 +1,6 @@
 #include"brute_force.h"
+
+int numberOfGuesses = 0;
  
 bool bruteForce(state_vector_t &_stateVector, int row, int col) {
 
@@ -29,6 +31,7 @@ bool bruteForce(state_vector_t &_stateVector, int row, int col) {
                 && !valueInCol(o, col, row, _stateVector)
                 && !valueInBox(o, row, col, _stateVector)) ) {
             _stateVector[row][col] = {o};
+            ::numberOfGuesses++;
             if ( bruteForce(_stateVector, row, col+1) ) {
                 return true;
             }

@@ -1,12 +1,12 @@
 #include"solver.h"
 
-bool sudokuSolver(sudoku_t &originalSudoku) {
+bool sudokuSolver(sudoku_t &originalSudoku, bool useBruteForce, bool prettyPrint) {
 
     bool sudokuIsSolved = false;
+
     // Start timer for complete solver
     auto startProgram = std::chrono::high_resolution_clock::now();
-    std::cout << "Printing original Sudoku:" << std::endl;
-    print(originalSudoku);
+    ( prettyPrint ) ? print(originalSudoku) : printLine(originalSudoku);
 
     state_vector_t solutionSudoku;
 
@@ -22,28 +22,34 @@ bool sudokuSolver(sudoku_t &originalSudoku) {
 
     // Run constraint propagation, if sudoku is solved, print and exit
     if ( constraintPropagation(solutionSudoku, originalSudoku) ) {
-        std::cout << "Solved puzzle after constraint propagation:" << std::endl;
-        print(solutionSudoku);
+        ( prettyPrint ) ? print(solutionSudoku) : printLine(solutionSudoku);
+        std::cout << "Solved puzzle after constraint propagation" << std::endl;
         sudokuIsSolved = true;
     // If not entirely solved, start brute forcing on remaining possible solutions
     } else {
-        std::cout << "Printing puzzle after constraint propagation:" << std::endl;
-        print(solutionSudoku);
-
-        // Start timer for bruteforce
-        auto startBruteForce = std::chrono::high_resolution_clock::now();
-        if ( bruteForce(solutionSudoku, 0, 0) ) {
-            std::cout << "Solved puzzle after using brute force on top. Solution:" << std::endl;
-            sudokuIsSolved = true;
-        } else {
-            std::cout << "Couldn't solve puzzle with brute force either. We came this far:" << std::endl;
+        if ( prettyPrint ) {
+            std::cout << "Printing puzzle after constraint propagation:" << std::endl;
+            print(solutionSudoku);
         }
-        // End timer for bruteforce
-        auto endBruteForce = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endBruteForce - startBruteForce);
 
-        print(solutionSudoku);
-        std::cout << "Execution time for brute force (ms): " << duration.count() << std::endl;
+        if (useBruteForce) {
+
+            // Start timer for bruteforce
+            auto startBruteForce = std::chrono::high_resolution_clock::now();
+            if ( bruteForce(solutionSudoku, 0, 0) ) {
+                ( prettyPrint ) ? print(solutionSudoku) : printLine(solutionSudoku);
+                std::cout << "Puzzle solved using brute force on top." << std::endl;
+                sudokuIsSolved = true;
+            } else {
+                std::cout << "Couldn't solve puzzle with brute force either." << std::endl;
+            }
+            // End timer for bruteforce
+            auto endBruteForce = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endBruteForce - startBruteForce);
+
+            std::cout << "Execution time for brute force (ms): " << duration.count() << std::endl;
+
+        }
 
     }
 
