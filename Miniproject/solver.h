@@ -3,9 +3,13 @@
 
 #include<iostream>
 #include <algorithm>
+#include <chrono>
 
 #include"printer.h"
 #include"variable_definitions.h"
+#include"brute_force.h"
+
+bool sudokuSolver(sudoku &original_sudoku);
 
 bool constraint_propagation(state_vector &_state_vector, const sudoku &_original_sudoku);
 bool sudoku_is_solved(state_vector &_state_vector);
