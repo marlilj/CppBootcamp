@@ -6,6 +6,7 @@ bool sudokuSolver(sudoku_t &originalSudoku, bool useBruteForce, bool prettyPrint
 
     // Start timer for complete solver
     auto startProgram = std::chrono::high_resolution_clock::now();
+    std::cout << "Input:                  ";
     ( prettyPrint ) ? print(originalSudoku) : printLine(originalSudoku);
 
     state_vector_t solutionSudoku;
@@ -28,8 +29,11 @@ bool sudokuSolver(sudoku_t &originalSudoku, bool useBruteForce, bool prettyPrint
     // If not entirely solved, start brute forcing on remaining possible solutions
     } else {
         if ( prettyPrint ) {
-            std::cout << "Printing puzzle after constraint propagation:" << std::endl;
+            std::cout << "Printing puzzle after constraint propagation:";
             print(solutionSudoku);
+        } else {
+            std::cout << "Constraint propagation: ";
+            printLine(solutionSudoku);
         }
 
         if (useBruteForce) {
@@ -37,6 +41,7 @@ bool sudokuSolver(sudoku_t &originalSudoku, bool useBruteForce, bool prettyPrint
             // Start timer for bruteforce
             auto startBruteForce = std::chrono::high_resolution_clock::now();
             if ( bruteForce(solutionSudoku, 0, 0) ) {
+                std::cout << "Brute force:            ";
                 ( prettyPrint ) ? print(solutionSudoku) : printLine(solutionSudoku);
                 std::cout << "Puzzle solved using brute force on top." << std::endl;
                 sudokuIsSolved = true;

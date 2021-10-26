@@ -1,7 +1,7 @@
 #include"printer.h"
 
 void print(sudoku_t &sudokuPuzzle) {
-    std::cout << "----------------------------" << std::endl;
+    std::cout << "\n----------------------------" << std::endl;
     for (int i=0; i<SSIZE; i++) {
         std::cout << "| ";
             for (int j=0; j<SSIZE; j++) {
@@ -18,7 +18,7 @@ void print(sudoku_t &sudokuPuzzle) {
 }
 
 void print(state_vector_t &intermediateState) {
-    std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
+    std::cout << "\n-------------------------------------------------------------------------------------------------" << std::endl;
     for (int row = 0 ; row < SSIZE; row++) {
         std::cout << "|\t";
         for (int col = 0;  col < SSIZE; col++ ) {
@@ -54,8 +54,10 @@ void printLine(sudoku_t &sudokuPuzzle) {
 void printLine(state_vector_t &intermediateState) {
     for (int row = 0 ; row < SSIZE; row++) {
         for (int col = 0;  col < SSIZE; col++ ) {
-            for (int x: intermediateState[row][col]) {
-                std::cout << x;
+            if (intermediateState[row][col].size() == 1) {
+                std::cout << intermediateState[row][col][0];
+            } else {
+                std::cout << '.';
             }
         }
     }
