@@ -2,10 +2,12 @@
 
 int numberOfGuesses = 0;
  
-bool bruteForce(state_vector_t &_stateVector, int row, int col) {
+bool bruteForce(state_vector_t &_stateVector, const sudoku_t &_originalSudoku, int row, int col, int startRow, int startCol, int recursiveCounter) {
+    ++recursiveCounter;
+    // print(_stateVector);
 
     // If we have already parsed all squares, return true
-    if ( row == 8 && col == 9 ) {
+    if ( (row == startRow && col == startCol+1) && !(recursiveCounter==2) ) {
         return true;
     }
 
@@ -15,12 +17,22 @@ bool bruteForce(state_vector_t &_stateVector, int row, int col) {
         col = 0;
     }
 
-    // If we already have the final value, move on to next square
-    if ( _stateVector[row][col].size() == 1 ) {
-        return bruteForce(_stateVector, row, col+1);
+    if (row == 9) {
+        row = 0;
     }
 
-    // Store all options
+    // If we already have the final value, move on to next square
+    if ( _stateVector[row][col].size() == 1 ) {
+        return bruteForce(_stateVector, _originalSudoku, row, col+1, startRow, startCol, recursiveCounter);
+    }
+
+    // Copy current state
+    state_vector_t sudoku_copy;
+    for (int row = 0 ; row < SSIZE ; row++ ) {
+        for ( int col = 0; col < SSIZE ; col++ ) {
+            sudoku_copy[row][col] = _stateVector[row][col];
+        }
+    }
     std::vector<int> options = _stateVector[row][col];
 
     // Run over all options and call downstream values recursively
@@ -32,13 +44,26 @@ bool bruteForce(state_vector_t &_stateVector, int row, int col) {
                 && !valueInBox(o, row, col, _stateVector)) ) {
             _stateVector[row][col] = {o};
             ::numberOfGuesses++;
-            if ( bruteForce(_stateVector, row, col+1) ) {
+            if ( !removeAndUpdatePeers(o, row, col, _stateVector) ) {
+                return false;
+            }
+            if ( bruteForce(_stateVector, _originalSudoku, row, col+1, startRow, startCol, recursiveCounter) ) {
                 return true;
+            }
+            // set all values back to how they were
+            for (int row = 0 ; row < SSIZE ; row++ ) {
+                for ( int col = 0; col < SSIZE ; col++ ) {
+                    _stateVector[row][col] = sudoku_copy[row][col];
+                }
             }
         }
     }
 
     // If we come here none of the assigned options worked downstream
-    _stateVector[row][col] = options;
+    for (int row = 0 ; row < SSIZE ; row++ ) {
+        for ( int col = 0; col < SSIZE ; col++ ) {
+            _stateVector[row][col] = sudoku_copy[row][col];
+        }
+    }
     return false;
 }

@@ -3,6 +3,6 @@
 #include <iostream>
 #include"variable_definitions.h"
 
-bool bruteForce(state_vector_t &_stateVector, int row, int col);
+bool bruteForce(state_vector_t &_stateVector, const sudoku_t &_originalSudoku, int row, int col, int startRow, int startCol, int recursiveCounter);
 
 #endif
