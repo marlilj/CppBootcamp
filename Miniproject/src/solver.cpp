@@ -119,9 +119,10 @@ bool sudokuIsSolved(state_vector_t &_stateVector) {
 
 bool removeAndUpdatePeers(int _value, unsigned int row, unsigned int col, state_vector_t &_stateVector) {
     bool returnVal = false;
-    returnVal = returnVal || removeFromRow(_value, row, col, _stateVector);
-    returnVal = returnVal || removeFromCol(_value, col, row, _stateVector);
-    returnVal = returnVal || removeFromBox(_value, row, col, _stateVector);
+    bool rowReturn = removeFromRow(_value, row, col, _stateVector);
+    bool colReturn = removeFromCol(_value, col, row, _stateVector);
+    bool boxReturn = removeFromBox(_value, row, col, _stateVector);
+    returnVal = (rowReturn || colReturn || boxReturn);
     return returnVal;
 }
 
@@ -226,9 +227,6 @@ bool removeFromRow(int _value, unsigned int row, unsigned int valueCol, state_ve
                 }
             }
             checkUniqueValueAmongPeers(row, col, _stateVector);
-            if (_stateVector[row][col].size() == 1 ) {
-                removeAndUpdatePeers(_stateVector[row][col][0], row, col, _stateVector);
-            }
         }
     }
     return returnVal;
@@ -263,9 +261,6 @@ bool removeFromCol(int _value, unsigned int col, unsigned int valueRow, state_ve
                 }
             }
             checkUniqueValueAmongPeers(row, col, _stateVector);
-            if (_stateVector[row][col].size() == 1 ) {
-                removeAndUpdatePeers(_stateVector[row][col][0], row, col, _stateVector);
-            }
         }
     }
     return returnVal;
@@ -306,7 +301,6 @@ bool removeFromBox(int _value, unsigned int row, unsigned int col, state_vector_
                     }
                 }
                 if (_stateVector[r][c].size() > 1 ) {
-                    // removeAndUpdatePeers(_stateVector[r][c][0], r, c, _stateVector);
                     checkUniqueValueAmongPeers(r, c, _stateVector);
                 }
             }

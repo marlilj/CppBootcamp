@@ -44,9 +44,7 @@ bool bruteForce(state_vector_t &_stateVector, const sudoku_t &_originalSudoku, i
                 && !valueInBox(o, row, col, _stateVector)) ) {
             _stateVector[row][col] = {o};
             ::numberOfGuesses++;
-            if ( !removeAndUpdatePeers(o, row, col, _stateVector) ) {
-                return false;
-            }
+            removeAndUpdatePeers(o, row, col, _stateVector);
             if ( bruteForce(_stateVector, _originalSudoku, row, col+1, startRow, startCol, recursiveCounter) ) {
                 return true;
             }
