@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
 
     // VARIABLES SET BY USER
     bool useBruteForce = true;
-    bool prettyPrint = false;
+    bool prettyPrint = true;
 
     if ( argc == 1 ) {
         std::cout << "No input argument provided. Exiting ..." << std::endl;

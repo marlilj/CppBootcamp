@@ -22,8 +22,13 @@ void print(state_vector_t &intermediateState) {
     for (int row = 0 ; row < SSIZE; row++) {
         std::cout << "|\t";
         for (int col = 0;  col < SSIZE; col++ ) {
-            for (int x: intermediateState[row][col]) {
-                std::cout << x;
+            square_t square = intermediateState[row][col];
+            if (square.state == 0 ) {
+                for (int x: square.possibilities) {
+                    std::cout << x;
+                }
+            } else {
+                std::cout <<square.state;
             }
             if ((col+1)%3 == 0) {
                 std::cout << "\t|\t";
@@ -54,8 +59,8 @@ void printLine(sudoku_t &sudokuPuzzle) {
 void printLine(state_vector_t &intermediateState) {
     for (int row = 0 ; row < SSIZE; row++) {
         for (int col = 0;  col < SSIZE; col++ ) {
-            if (intermediateState[row][col].size() == 1) {
-                std::cout << intermediateState[row][col][0];
+            if (intermediateState[row][col].state != 0) {
+                std::cout << intermediateState[row][col].state;
             } else {
                 std::cout << '.';
             }

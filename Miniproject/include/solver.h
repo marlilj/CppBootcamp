@@ -4,6 +4,8 @@
 #include<iostream>
 #include <algorithm>
 #include <chrono>
+#include <map>
+#include <set>
 
 #include"printer.h"
 #include"variable_definitions.h"
@@ -14,20 +16,23 @@ bool sudokuSolver(sudoku_t &originalSudoku, bool useBruteForce, bool prettyPrint
 bool constraintPropagation(state_vector_t &_stateVector, const sudoku_t &_originalSudoku);
 bool sudokuIsSolved(state_vector_t &_stateVector);
 
-bool removeAndUpdatePeers(int _value, unsigned int row, unsigned int col, state_vector_t &_stateVector);
-void checkUniqueValueAmongPeers(unsigned int row, unsigned int col, state_vector_t &_stateVector);
+bool setValue(unsigned int row, unsigned int col, unsigned int value, state_vector_t &_stateVector);
+bool removeAndUpdatePeers(unsigned int row, unsigned int col, state_vector_t &_stateVector);
+bool findAndSetUniqueValueAmongPeers(unsigned int row, unsigned int col, state_vector_t &_stateVector);
 
 bool valueInRow(int _value, unsigned int row, unsigned int valueCol, state_vector_t &_stateVector);
-bool valueInCol(int _value, unsigned int col, unsigned int valueRow, state_vector_t &_stateVector);
+bool valueInCol(int _value, unsigned int valueRow, unsigned int col, state_vector_t &_stateVector);
 bool valueInBox(int _value, unsigned int row, unsigned int col, state_vector_t &_stateVector);
 
-bool optionInRow(int _value, unsigned int row, unsigned int valueCol, state_vector_t &_stateVector);
-bool optionInCol(int _value, unsigned int col, unsigned int valueRow, state_vector_t &_stateVector);
-bool optionInBox(int _value, unsigned int row, unsigned int col, state_vector_t &_stateVector);
+bool removeFromRow(unsigned int row, unsigned int valueCol, state_vector_t &_stateVector);
+bool removeFromCol(unsigned int valueRow, unsigned int col, state_vector_t &_stateVector);
+bool removeFromBox(unsigned int row, unsigned int col, state_vector_t &_stateVector);
 
-bool removeFromRow(int _value, unsigned int row, unsigned int valueCol, state_vector_t &_stateVector);
-bool removeFromCol(int _value, unsigned int col, unsigned int valuRow, state_vector_t &_stateVector);
-bool removeFromBox(int _value, unsigned int row, unsigned int col, state_vector_t &_stateVector);
+bool removePossibleValue(unsigned int row, unsigned int col, unsigned int _value, state_vector_t &_stateVector);
+bool findPossibleValuesInRowAndCol(unsigned int row, unsigned int col, state_vector_t &_stateVector,
+    std::multimap<int, int> &rowPossibles, std::multimap<int, int> &colPossibles);
+bool findPossibleValuesInBox(unsigned int row, unsigned int col, state_vector_t &_stateVector,
+    std::multimap<int, std::pair<int, int>> &boxPossibles);
 
 void prepareIntermediateState(state_vector_t &_stateVector, const sudoku_t &_originalSudoku);
 
