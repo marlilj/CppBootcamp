@@ -3,6 +3,7 @@
 #include <iostream>
 #include"variable_definitions.h"
 
-bool bruteForce(state_vector_t &_stateVector, const sudoku_t &_originalSudoku, int row, int col, int startRow, int startCol, int recursiveCounter);
+bool findLowestPossibleSolutions(unsigned int &row, unsigned int &col, const state_vector_t &_stateVector);
+bool bruteForceSearch(state_vector_t &_stateVector);
 
 #endif

@@ -13,7 +13,7 @@
 
 bool sudokuSolver(sudoku_t &originalSudoku, bool useBruteForce, bool prettyPrint);
 
-bool constraintPropagation(state_vector_t &_stateVector, const sudoku_t &_originalSudoku);
+bool constraintPropagation(state_vector_t &_stateVector);
 bool sudokuIsSolved(state_vector_t &_stateVector);
 
 bool setValue(unsigned int row, unsigned int col, unsigned int value, state_vector_t &_stateVector);

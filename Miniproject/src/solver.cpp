@@ -15,7 +15,7 @@ bool sudokuSolver(sudoku_t &originalSudoku, bool useBruteForce, bool prettyPrint
     prepareIntermediateState(solutionSudoku, originalSudoku);
 
     // Run constraint propagation, if sudoku is solved, print and exit
-    if ( constraintPropagation(solutionSudoku, originalSudoku) ) {
+    if ( constraintPropagation(solutionSudoku) ) {
         std::cout << "Constraint propagation: ";
         ( prettyPrint ) ? print(solutionSudoku) : printLine(solutionSudoku);
         std::cout << "Solved puzzle after constraint propagation" << std::endl;
@@ -32,44 +32,16 @@ bool sudokuSolver(sudoku_t &originalSudoku, bool useBruteForce, bool prettyPrint
 
         if (useBruteForce) {
 
-            // find best square to start in
-            unsigned int rowLeastPossible = 9;
-            unsigned int colLeastPossible = 9;
-            unsigned int leastHypos = 9;
-
-            for (int row = 0 ; row < SSIZE ; row++ ) {
-                for ( int col = 0; col < SSIZE ; col++ ) {
-                    if (solutionSudoku[row][col].state == 0 && solutionSudoku[row][col].possibilities.size() < leastHypos) {
-                        leastHypos = solutionSudoku[row][col].possibilities.size();
-                        rowLeastPossible = row;
-                        colLeastPossible = col;
-                    }
-
-                    if (leastHypos == 2) {
-                        break; // can't find less than 2
-                    }
-                }
-            }
-
             // Start timer for bruteforce
             auto startBruteForce = std::chrono::high_resolution_clock::now();
-            if ( bruteForce(solutionSudoku, originalSudoku, rowLeastPossible, colLeastPossible, rowLeastPossible, colLeastPossible, 0) ) {
+            // if ( bruteForce(solutionSudoku, rowLeastPossible, colLeastPossible, rowLeastPossible, colLeastPossible, 0) ) {
+            if ( bruteForceSearch(solutionSudoku)) {
                 std::cout << "Brute force:            ";
                 ( prettyPrint ) ? print(solutionSudoku) : printLine(solutionSudoku);
                 std::cout << "Puzzle solved using brute force on top." << std::endl;
                 sudokuIsSolved = true;
             } else {
-                std::cout << "Couldn't solve puzzle with brute force starting from (" 
-                          << rowLeastPossible << ", " << colLeastPossible << ")\n"
-                          << "Testing to start from (0, 0)" << std::endl;
-                if ( bruteForce(solutionSudoku, originalSudoku, 0, 0, 0, 0, 0) ) {
-                    std::cout << "Brute force:            ";
-                    ( prettyPrint ) ? print(solutionSudoku) : printLine(solutionSudoku);
-                    std::cout << "Puzzle solved using brute force on top." << std::endl;
-                    sudokuIsSolved = true;
-                } else {
-                    std::cout << "Couldn't solve puzzle" << std::endl;
-                }
+                std::cout << "Couldn't solve with brute force search either." << std::endl;
             }
             // End timer for bruteforce
             auto endBruteForce = std::chrono::high_resolution_clock::now();
@@ -101,14 +73,13 @@ bool setValue(unsigned int row, unsigned int col, unsigned int value, state_vect
     return returnValue;
 }
 
-bool constraintPropagation(state_vector_t &_stateVector, const sudoku_t &_originalSudoku) {
+bool constraintPropagation(state_vector_t &_stateVector) {
     int value = 0;
 
     // Loop over the sudoku once for each square, if set remove peers, if not,
     // check if one possible solution exists only here, or remove entries that are impossible
     for (int row = 0 ; row < SSIZE; row++) {
         for (int col = 0;  col < SSIZE; col++ ) {
-            value = _originalSudoku[row][col];
             if (_stateVector[row][col].state != 0) {
                 removeAndUpdatePeers(row, col, _stateVector);
             } else {
@@ -139,9 +110,9 @@ bool removeAndUpdatePeers(unsigned int row, unsigned int col, state_vector_t &_s
         bool colReturn = removeFromCol(row, col, _stateVector);
         bool boxReturn = removeFromBox(row, col, _stateVector);
         returnVal = (rowReturn && colReturn && boxReturn);
-        _stateVector[row][col].peersRemoved = true;
-        if (rowReturn && colReturn && boxReturn) {
-            returnVal = findAndSetUniqueValueAmongPeers(row, col, _stateVector);
+        if (returnVal) {
+            _stateVector[row][col].peersRemoved = true;
+            findAndSetUniqueValueAmongPeers(row, col, _stateVector);
         }
     }
     return returnVal;
@@ -286,23 +257,15 @@ bool valueInRow(int _value, unsigned int row, unsigned int valueCol, state_vecto
     return return_val;
 }
 
-bool rowIsFinal(unsigned int row, unsigned int valueCol, state_vector_t &_stateVector) {
-    bool return_val = true;
-    for (int col = 0;  col < SSIZE; col++ ) {
-        if (col != valueCol && _stateVector[row][col].state == 0 ) {
-                return_val = false;
-                break;
-        }
-    }
-    return return_val;
-}
-
 bool removeFromRow(unsigned int row, unsigned int valueCol, state_vector_t &_stateVector) {
     bool returnVal = true;
     int _value = _stateVector[row][valueCol].state;
     for (int col = 0;  col < SSIZE; col++ ) {
         if (col != valueCol && _stateVector[row][col].state == 0) {
-            returnVal = removePossibleValue(row, col, _value, _stateVector);
+            if (!removePossibleValue(row, col, _value, _stateVector)) {
+                returnVal = false;
+                break;
+            }
         }
     }
     return returnVal;
@@ -343,7 +306,10 @@ bool removeFromCol(unsigned int valueRow, unsigned int col, state_vector_t &_sta
     int _value = _stateVector[valueRow][col].state;
     for (int row = 0;  row < SSIZE; row++ ) {
         if ( row != valueRow && _stateVector[row][col].state == 0) {
-            returnVal = removePossibleValue(row, col, _value, _stateVector);
+            if (!removePossibleValue(row, col, _value, _stateVector)) {
+                returnVal = false;
+                break;
+            }
         }
     }
     return returnVal;
@@ -357,7 +323,10 @@ bool removeFromBox(unsigned int row, unsigned int col, state_vector_t &_stateVec
     for (int r = start_row; r < start_row+3; r++) {
         for (int c = start_col; c < start_col+3; c++) {
             if (!(r == row && c == col) ) {
-                returnVal = removePossibleValue(r, c, _value, _stateVector);
+                if (!removePossibleValue(r, c, _value, _stateVector)) {
+                    returnVal = false;
+                    break;
+                }
             }
         }
     }
